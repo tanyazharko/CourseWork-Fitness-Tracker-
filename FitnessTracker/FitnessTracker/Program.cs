@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿
+using System.Text.Json;
 
 namespace FitnessTracker
 {
@@ -121,7 +122,7 @@ namespace FitnessTracker
 
             return product;
         }
-       
+
         private static (DateTime Begin, DateTime End, Activity Activity) EnterExercise()
         {
             Console.Write("Enter name of activity:");
@@ -149,7 +150,7 @@ namespace FitnessTracker
 
         static void Main()
         {
-            Console.WriteLine("Enter your user name:  ");
+            Console.Write("Enter your username:  ");
             string userName = CorrectDate();
 
             WorkWithUsers user = new WorkWithUsers(userName);
@@ -158,13 +159,13 @@ namespace FitnessTracker
 
             if (user.IsNewUser)
             {
-                Console.Write("Enter your name :");
+                Console.Write("Enter your name: ");
                 string name = CorrectDate();
-                Console.Write("Enter your gener:");
+                Console.Write("Enter your gener: ");
                 string gender = CorrectDate();
                 DateTime birthDate = ParseDateTime("Birth Date"); ;
-                double weight = ParseDouble("weight");
-                double height = ParseDouble("height");
+                double weight = ParseDouble("Weight");
+                double height = ParseDouble("Height");
 
                 user.SetNewUserData(name, gender, birthDate, weight, height);
             }
@@ -185,7 +186,7 @@ namespace FitnessTracker
                         Environment.Exit(0);
                         break;
                 }
-            }     
+            }
         }
     }
 }
