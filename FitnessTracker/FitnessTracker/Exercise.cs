@@ -11,6 +11,7 @@ namespace FitnessTracker
         public int ActivityId { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
+        public int _timeOfTranning;
 
         private readonly User user;
         public List<Exercise> Exercises { get; }
@@ -19,11 +20,12 @@ namespace FitnessTracker
         public Exercise() { }
 
         public Exercise(User user, Activity activity, DateTime start, DateTime finish)
-        {
+        { 
             Start = start;
             Finish = finish;
             Activity = activity;
             User = user;
+            _timeOfTranning = (finish - start).Minutes;
         }
 
         public Exercise(User user)

@@ -11,6 +11,7 @@
         public double Fats { get; set; }
         public double Carbohydates { get; set; }
         public double Weight { get; set; }
+        public double _calories;
         public Food() { }
 
         public Food(string name) : this(name, 0, 0, 0, 0,0) { }
@@ -48,11 +49,12 @@
             }
 
             Name = name;
-            Calories = calories / 100.0;
-            Proteins = proteins / 100.0;
-            Fats = fats / 100.0;
-            Carbohydates = carbohydates / 100.0;
-            Weight = weight;    
+            Calories = calories;
+            Proteins = proteins;
+            Fats = fats;
+            Carbohydates = carbohydates;
+            Weight = weight;
+            _calories = weight * calories;
         }
     }
 }

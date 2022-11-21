@@ -3,7 +3,7 @@
     public class WorkWithUsers
     {
         public List<User> Users { get; }
-        public User User { get; }
+        public User User { get; set; }
         public bool IsNewUser { get; set; } = false;
         public WorkWithUsers() { }
 

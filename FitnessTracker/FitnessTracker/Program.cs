@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Text.Json;
 
 namespace FitnessTracker
@@ -53,7 +54,7 @@ namespace FitnessTracker
             }
         }
 
-        private static double ParseDouble(string name)
+        private static double CorrectDouble(string name)
         {
             while (true)
             {
@@ -71,7 +72,7 @@ namespace FitnessTracker
             }
         }
 
-        private static DateTime ParseDateTime(string value)
+        private static DateTime CorrectDateTime(string value)
         {
             while (true)
             {
@@ -89,7 +90,7 @@ namespace FitnessTracker
             }
         }
 
-        private static DateTime ParseTime(string value)
+        private static DateTime CorrectTime(string value)
         {
             while (true)
             {
@@ -112,12 +113,12 @@ namespace FitnessTracker
             Console.Write("Enter name of food: ");
             var food = CorrectDate();
 
-            var calories = ParseDouble("calories");
-            var prots = ParseDouble("proteins");
-            var fats = ParseDouble("fats");
-            var carbs = ParseDouble("carbohydates");
+            var calories = CorrectDouble("calories");
+            var prots = CorrectDouble("proteins");
+            var fats = CorrectDouble("fats");
+            var carbs = CorrectDouble("carbohydates");
 
-            var weight = ParseDouble("portion weight");
+            var weight = CorrectDouble("portion weight");
             var product = new Food(food, calories, prots, fats, carbs, weight);
 
             return product;
@@ -128,10 +129,10 @@ namespace FitnessTracker
             Console.Write("Enter name of activity:");
             var name = CorrectDate();
 
-            var energy = ParseDouble("energy consumption per minute");
+            var energy = CorrectDouble("energy consumption per minute");
 
-            var begin = ParseTime("time of begin");
-            var end = ParseTime("time of end");
+            var begin = CorrectTime("time of begin");
+            var end = CorrectTime("time of end");
 
             var activity = new Activity(name, energy);
             return (begin, end, activity);
@@ -142,6 +143,8 @@ namespace FitnessTracker
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("F - enter a meal");
             Console.WriteLine("A - enter exercise");
+            Console.WriteLine("E - view a list of your workouts");
+            Console.WriteLine("M - view a list of your meal");
             Console.WriteLine("Z - exit");
             string answer = CorrectDate();
 
@@ -163,9 +166,9 @@ namespace FitnessTracker
                 string name = CorrectDate();
                 Console.Write("Enter your gener: ");
                 string gender = CorrectDate();
-                DateTime birthDate = ParseDateTime("Birth Date"); ;
-                double weight = ParseDouble("Weight");
-                double height = ParseDouble("Height");
+                DateTime birthDate = CorrectDateTime("Birth Date"); ;
+                double weight = CorrectDouble("Weight");
+                double height = CorrectDouble("Height");
 
                 user.SetNewUserData(name, gender, birthDate, weight, height);
             }
@@ -181,6 +184,18 @@ namespace FitnessTracker
                     case "A":
                         var exe = EnterExercise();
                         exercise.AddExercise(exe.Activity, exe.Begin, exe.End);
+                        break;
+                    case "E":
+                        foreach (var selectExercise in exercise.Exercises.Where(e => e.User.UserName == userName))
+                        {
+                            Console.WriteLine($"Workout: {selectExercise.Activity.Name} -  training time in minutes {selectExercise._timeOfTranning}");
+                        }
+                        break;
+                    case "M":
+                        foreach (var selectMeal in meal.Meals.Where(e => e.User.UserName == userName))
+                        {
+                            Console.WriteLine($"The product's name: {selectMeal.Food.Name} - count of calories {selectMeal.Food._calories}");
+                        }
                         break;
                     case "Z":
                         Environment.Exit(0);
