@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FitnessTracker
 {
-    public class Meal
+    public class Meal : BaseSave
     {
         public int Id { get; set; }
         public DateTime MealTime { get; set; } = DateTime.Now;
@@ -70,18 +70,18 @@ namespace FitnessTracker
 
         private List<Meal> GetMeals()
         {
-            return Program.GetInfo<Meal>() ?? new List<Meal>();
+            return GetInfo<Meal>() ?? new List<Meal>();
         }
 
         private List<Food> GetFoods()
         {
-            return Program.GetInfo<Food>() ?? new List<Food>();
+            return GetInfo<Food>() ?? new List<Food>();
         }
 
         private void Save()
         {
-            Program.Save(Meals);
-            Program.Save(Foods);
+            Save(Meals);
+            Save(Foods);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace FitnessTracker
+﻿using System.Reflection;
+
+namespace FitnessTracker
 {
     public class Food
     {
@@ -13,47 +15,34 @@
         public double Weight { get; set; }
         public double _calories;
         public Food() { }
-
         public Food(string name) : this(name, 0, 0, 0, 0,0) { }
 
         public Food(string name, double calories, double proteins, double fats, double carbohydates, double weight)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException("Name can not to be empty or null", nameof(name));
-            }
+            Name = !string.IsNullOrWhiteSpace(name)
+               ? name
+               : throw new ArgumentNullException(nameof(name));
 
-            if (calories < 0)
-            {
-                throw new ArgumentException("Сalories can not to be < 0.", nameof(calories));
-            }
+            Calories = !(calories < 0)
+            ? calories
+            : throw new ArgumentException(nameof(calories));
 
-            if (proteins < 0)
-            {
-                throw new ArgumentException("Proteins can not to be < 0", nameof(proteins));
-            }
+            proteins = !(proteins < 0)
+            ? proteins
+            : throw new ArgumentException(nameof(proteins));
 
-            if (fats < 0)
-            {
-                throw new ArgumentException("Fats can not to be < 0", nameof(fats));
-            }
+            Fats = !(fats < 0)
+            ? fats
+            : throw new ArgumentException(nameof(fats));
 
-            if (carbohydates < 0)
-            {
-                throw new ArgumentException("Carbohydates can not to be < 0", nameof(carbohydates));
-            }
+            Carbohydates = !(carbohydates < 0)
+           ? carbohydates
+           : throw new ArgumentException(nameof(carbohydates));
 
-            if (weight < 0)
-            {
-                throw new ArgumentException("Carbohydates can not to be < 0", nameof(weight));
-            }
+            Weight = !(weight < 0)
+           ? weight
+           : throw new ArgumentException(nameof(weight));
 
-            Name = name;
-            Calories = calories;
-            Proteins = proteins;
-            Fats = fats;
-            Carbohydates = carbohydates;
-            Weight = weight;
             _calories = weight * calories;
         }
     }

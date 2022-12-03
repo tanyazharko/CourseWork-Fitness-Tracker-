@@ -2,7 +2,7 @@
 
 namespace FitnessTracker
 {
-    public class Exercise
+    public class Exercise: BaseSave
     {
         public int Id { get; set; }
         public DateTime Start { get; set; }
@@ -12,11 +12,9 @@ namespace FitnessTracker
         public User User { get; set; }
         public int UserId { get; set; }
         public int _timeOfTranning;
-
         private readonly User user;
         public List<Exercise> Exercises { get; }
         public List<Activity> Activities { get; }
-
         public Exercise() { }
 
         public Exercise(User user, Activity activity, DateTime start, DateTime finish)
@@ -30,7 +28,7 @@ namespace FitnessTracker
 
         public Exercise(User user)
         {
-            this.user = user ?? throw new ArgumentNullException("User can not be null", nameof(user));
+            this.user = user ?? throw new ArgumentNullException(nameof(user));
 
             Exercises = GetExercises();
             Activities = GetActivities();
@@ -57,18 +55,18 @@ namespace FitnessTracker
 
         private List<Exercise> GetExercises()
         {
-            return Program.GetInfo<Exercise>() ?? new List<Exercise>();
+            return GetInfo<Exercise>() ?? new List<Exercise>();
         }
 
         private List<Activity> GetActivities()
         {
-            return Program.GetInfo<Activity>() ?? new List<Activity>();
+            return GetInfo<Activity>() ?? new List<Activity>();
         }
 
         private void Save()
         {
-            Program.Save(Exercises);
-            Program.Save(Activities);
+            Save(Exercises);
+            Save(Activities);
         }
     }
 }

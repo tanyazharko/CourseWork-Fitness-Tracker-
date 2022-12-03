@@ -14,51 +14,36 @@
 
         public User(string userName)
         {
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                throw new ArgumentNullException("User name can not to be empty or null", nameof(userName));
-            }
-
-            UserName = userName;
+            UserName = !string.IsNullOrWhiteSpace(userName)
+                ? userName
+                : throw new ArgumentNullException(nameof(userName));
         }
 
         public User(string userName, string name, string gender, DateTime birthDate, double weight, double height)
         {
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                throw new ArgumentNullException("User name can not to be empty or null", nameof(userName));
-            }
+            UserName = !string.IsNullOrWhiteSpace(userName)
+               ? userName
+               : throw new ArgumentNullException(nameof(userName));
 
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException("Name can not to be empty or null", nameof(name));
-            }
+            Name = !string.IsNullOrWhiteSpace(name)
+               ? name
+               : throw new ArgumentNullException(nameof(name));
 
-            if (gender == null)
-            {
-                throw new ArgumentNullException("Gender can not to be null.", nameof(gender));
-            }
+            Gender = !string.IsNullOrWhiteSpace(gender)
+            ? gender
+            : throw new ArgumentNullException(nameof(gender));
 
-            if (birthDate < DateTime.Parse("01.01.1900") || birthDate >= DateTime.Now)
-            {
-                throw new ArgumentException("Impossible birth Date", nameof(birthDate));
-            }
+            BirthDate = !(birthDate < DateTime.Parse("01.01.1900") || birthDate >= DateTime.Now)
+            ? birthDate
+            : throw new ArgumentException(nameof(birthDate));
 
-            if (weight <= 0)
-            {
-                throw new ArgumentException("Weight can not to be <= 0.", nameof(weight));
-            }
+            Weight = !(weight <= 0)
+            ? weight
+            : throw new ArgumentException(nameof(weight));
 
-            if (height <= 0)
-            {
-                throw new ArgumentException("Height can not to be <= 0", nameof(height));
-            }
-
-            Name = name;
-            Gender = gender;
-            BirthDate = birthDate;
-            Weight = weight;
-            Height = height;
+            Height = !(height <= 0)
+            ? height
+            : throw new ArgumentException(nameof(height));
         }
 
         private static int GetAge(DateTime birthDate)

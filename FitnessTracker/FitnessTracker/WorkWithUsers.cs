@@ -1,6 +1,9 @@
-﻿namespace FitnessTracker
+﻿using System.Reflection;
+using System.Xml.Linq;
+
+namespace FitnessTracker
 {
-    public class WorkWithUsers
+    public class WorkWithUsers : BaseSave
     {
         public List<User> Users { get; }
         public User User { get; set; }
@@ -9,12 +12,9 @@
 
         public WorkWithUsers(string userName)
         {
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                throw new ArgumentNullException("User name can not to be empty or null", nameof(userName));
-            }
-
-            Users = GetUsersData();
+            Users = !string.IsNullOrWhiteSpace(userName)
+              ? GetUsersData()
+              : throw new ArgumentNullException(nameof(userName));
 
             User = Users.SingleOrDefault(u => u.UserName == userName);
 
@@ -26,49 +26,58 @@
             }
         }
 
+        public static WorkWithUsers CreateANewUser(WorkWithUsers newUser)
+        {
+            Console.Write("Enter your name: ");
+            string? name = Console.ReadLine();
+            FitnessTracker.IsValidName(name);
+           
+            Console.Write("Enter your gener: ");
+            string? gender = Console.ReadLine();
+            FitnessTracker.IsValidName(gender);
+            
+            DateTime birthDate = FitnessTracker.CorrectDateTime("Birth Date"); ;
+            double weight = FitnessTracker.CorrectDouble("Weight");
+            double height = FitnessTracker.CorrectDouble("Height");
+
+            newUser.SetNewUserData(name, gender, birthDate, weight, height);
+
+            return newUser;
+        }
+
         public void SetNewUserData(string name, string gender, DateTime birthDate, double weight, double height)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException("Name can not to be empty or null", nameof(name));
-            }
+            User.Name = !string.IsNullOrWhiteSpace(name)
+               ? name
+               : throw new ArgumentNullException(nameof(name));
 
-            if (gender == null)
-            {
-                throw new ArgumentNullException("Gender can not to be null.", nameof(gender));
-            }
+            User.Gender = !string.IsNullOrWhiteSpace(gender)
+            ? gender
+            : throw new ArgumentNullException(nameof(gender));
 
-            if (birthDate < DateTime.Parse("01.01.1900") || birthDate >= DateTime.Now)
-            {
-                throw new ArgumentException("Impossible birth Date", nameof(birthDate));
-            }
+            User.BirthDate = !(birthDate < DateTime.Parse("01.01.1900") || birthDate >= DateTime.Now)
+            ? birthDate
+            : throw new ArgumentException(nameof(birthDate));
 
-            if (weight <= 0)
-            {
-                throw new ArgumentException("Weight can not to be <= 0.", nameof(weight));
-            }
+            User.Weight = !(weight <= 0)
+            ? weight
+            : throw new ArgumentException(nameof(weight));
 
-            if (height <= 0)
-            {
-                throw new ArgumentException("Height can not to be <= 0", nameof(height));
-            }
-
-            User.Name = name;
-            User.Gender = gender;
-            User.BirthDate = birthDate;
-            User.Weight = weight;
-            User.Height = height;
+            User.Height = !(height <= 0)
+            ? height
+            : throw new ArgumentException(nameof(height));
+           
             Save();
         }
 
         private void Save()
         {
-            Program.Save(Users);
+            Save(Users);
         }
 
         private List<User> GetUsersData()
         {
-            return Program.GetInfo<User>() ?? new List<User>();
+            return GetInfo<User>() ?? new List<User>();
         }
     }
 }

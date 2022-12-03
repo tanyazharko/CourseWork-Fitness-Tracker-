@@ -1,4 +1,6 @@
-﻿namespace FitnessTracker
+﻿using System.Reflection;
+
+namespace FitnessTracker
 {
     public class Activity
     {
@@ -8,19 +10,14 @@
         public Activity() { }
 
         public Activity(string name, double caloriesPerMinute)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException("Name can not to be empty or null", nameof(name));
-            }
+        {           
+            Name = !string.IsNullOrWhiteSpace(name)
+               ? name
+               : throw new ArgumentNullException(nameof(name));
 
-            if (caloriesPerMinute <= 0)
-            {
-                throw new ArgumentException("Сalories can not to be <= 0.", nameof(caloriesPerMinute));
-            }
-
-            Name = name;
-            CaloriesPerMinute = caloriesPerMinute;
+            CaloriesPerMinute = !(caloriesPerMinute <= 0)
+            ? caloriesPerMinute
+            : throw new ArgumentException(nameof(caloriesPerMinute));
         }
     }
 }
